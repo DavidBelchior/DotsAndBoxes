@@ -220,6 +220,82 @@ caixas a serem fechadas foi concluido.
 
 
 
+```lisp
+;; teste: (no-solucaop '((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL) 1)
+;; resultado: T
+(defun no-solucaop (no obj)
+  "Verifica se um no e solucao"
+  (cond ((= (numeroDeQuadrados (no-estado no)) obj) T)
+        (T nil)
+  )
+)
+```
+
+Quantos aos algoritmos utilizados estes serão descritos em seguida:
+
+## BFS (Breadth First Search)
+
+Este é um algoritmo de travessia de grafos que começa a percorrer o grafo a partir do nó raiz e explora todos os nós vizinhos. Em seguida, ele seleciona o nó mais 
+próximo e explora todos os nós inexplorados.
+O BFS coloca cada vértice do grafo em duas categorias - visitado e não visitado. Ele seleciona um único nó em um grafo e, em seguida, visita todos os nós adjacentes ao 
+nó selecionado.
+
+Isto é:
+
+1. Nó inicial => ABERTOS
+2. Se ABERTOS vazia falha.
+3. Remove o primeiro nó de ABERTOS (n) e coloca-o em FECHADOS 
+4. Expande o nó n. Colocar os sucessores no fim de ABERTOS, colocando os ponteiros para n.
+5. Se algum dos sucessores é um nó objectivo sai, e dá a solução. Caso contrário vai para 2.
+
+```lisp
+;; procura em largura
+;; teste: (bfs '((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) (0 1 1))) 0 nil) 'no-solucaop 'sucessores (operadores) 3)
+;; resultado: ((((0 0 0) (0 1 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 1 1) (0 1 1))) 2 NIL (((# # # #) (# # # #)) 1 NIL ((# #) 0 NIL)))
+(defun bfs (initialNode fnSolucao fnSucessores operators obj &optional (abertos nil) (fechados nil))
+  (cond ((and (null abertos) (null fechados)) (bfs initialNode fnSolucao fnSucessores operators obj (list initialnode) fechados))
+        ((null abertos) nil)
+        (T 
+          (let* ((n-fechados (append fechados (list (car abertos)))) (next-nodes (nos-unicos-bfs n-fechados (funcall fnSucessores (car abertos) operators 'bfs))))
+              (let ((no-obj-val (no-obj next-nodes fnSolucao obj)))
+              (format t "abertos: ~a~%" (length abertos))
+              (format t "fechados: ~a~%" (length n-fechados))
+              (format t "depth: ~a~%" (no-profundidade (car abertos)))
+              (terpri)
+                (cond ((not (null no-obj-val)) no-obj-val)
+                      (t (bfs initialNode fnSolucao fnSucessores operators obj (abertos-bfs (cdr abertos) next-nodes) n-fechados))
+                )
+              )
+          )
+        )
+  )
+)
+```
+
+
+![bfs_gif](https://user-images.githubusercontent.com/76535435/208426425-864229b0-4ea6-4a9e-a5e0-82867bf73d5f.gif)
+
+
+## DFS (Depth-first search)
+
+Este algoritmo de procura em profundidade inicia a usa procura no nó raiz da árvore, de seguida expande o seu primeiro sucessor, e continuamente 
+expande, aprofunda a árvore até que o nó objetivo seja encontrado ou até que este se depare que não possui mais sucessores. No caso do ramo da árvore não ter mais 
+sucessores então retrocede e começa no próximo sucessor do nó raiz da arvore, se este o tiver, realizando repetidamente os passos anteriormente descritos.
+
+Isto é:
+
+1. Nó inicial => ABERTOS
+2. Se ABERTOS vazia falha.
+3. Remove o primeiro nó de ABERTOS (n) e coloca-o em FECHADOS 
+4. Se a profundidade de n é maior que d vai para 2.
+5. Expande o nó n. Colocar os sucessores no início de ABERTOS, colocando os ponteiros para n.
+6. Se algum dos sucessores é um nó objectivo sai, e dá a solução. Caso contrário vai para 2.
+
+
+![dfs_gif](https://user-images.githubusercontent.com/76535435/208429926-ed6c1fe2-a335-49b9-ba74-8f936a12625c.gif)
+
+
+## A* (A* Search Algorithm)
 
 
 
