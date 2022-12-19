@@ -129,9 +129,16 @@ Do tipo horizontal: (((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) 
 
 A composição do nó é uma lista composta por:
 
-(Tabuleiro | Custo/Profundidade | Heuristica | Pai)
+(Tabuleiro | Profundidade | Heuristica | Pai)
 
-Neste caso o custo corresponderá à pronfundidade do nó.
+```lisp
+;; teste: (cria-no '(((0 0 0) (0 0 1) (0 1 1) (0 0 1))((0 0 0) (0 1 1) (1 0 1) (0 1 1))))
+;; resultado: ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL)
+(defun cria-no (tabuleiro &optional (g 0) (heuristica nil) (pai nil))
+  "Cria um no com o tabuleiro inserido, com a profundidade 0 se nao inserida, com o valor da heuristica e com o no pai."
+  (list tabuleiro g heuristica pai)
+)
+```
 
 #### Seletores do Nó
 
@@ -149,15 +156,20 @@ Nomeadamente:
 A Sucessão de um determinado nó, é um conjunto de movimentos permitidos de inserção de um arco (vertical ou horizontal) no tabuleiro.
 
 ```lisp
+;; teste: (novo-sucessor '((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL) 'verticais)
+;; resultado(apenas um no): ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 1) (1 0 1) (0 1 1))) 1 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL))
 (defun novo-sucessor (no operador  &optional (obj nil) (fn-heuristica nil))
+  "Cria um novo no com o operador aplicado ao no"
   (let ((estado (no-estado no)) 
         (profundidade (no-profundidade no))
         (pai no)
         (sucessores nil)
   )
+    "verifica qual o operador"
     (cond ((eq operador 'verticais) (setq sucessores (gerar-sucessores estado operador)))
           ((eq operador 'horizontais) (setq sucessores (gerar-sucessores estado operador)))
     )
+    "cria um novo no para cada sucessor"
     (cond ((and sucessores (not (null fn-heuristica))) (mapcar (lambda (x) (cria-no x (+ profundidade 1) (funcall fn-heuristica x obj) pai)) sucessores))
           (sucessores (mapcar (lambda (x) (cria-no x (+ profundidade 1) nil pai)) sucessores))
     )
@@ -166,7 +178,10 @@ A Sucessão de um determinado nó, é um conjunto de movimentos permitidos de in
 ```
 
 ```lisp
+;; teste: (sucessores '((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL) (operadores) 'dfs nil nil 2)
+;; resultado(um no sucessor): ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 1) (1 0 1) (0 1 1))) 1 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL))
 (defun sucessores (node operators algoritmo &optional (obj nil) (fn-heuristica nil) depth)
+  "Função que retorna uma lista com os sucessores de um no dependendo do algoritmo"
   (cond ((eq algoritmo 'bfs) (append (novo-sucessor node (first operators)) (novo-sucessor node (second operators))))
         ((eq algoritmo 'dfs) 
           (cond ((< (no-profundidade node) depth) (append (novo-sucessor node (first operators)) (novo-sucessor node (second operators))))
@@ -179,9 +194,28 @@ A Sucessão de um determinado nó, é um conjunto de movimentos permitidos de in
 ```
 
 
+
 ## Algoritmos e sua implementação
 
+No âmbito deste projeto, o objetivo principal consiste em atingir os objetivos definidos, que correspondem a um determinado número de caixas fechadas em cada problema. 
 
+Sendo que para tal é necessário utilizar algoritmos lecionados nesta unidade curricular, de forma a solucionar caminhos possiveis, que correspondem ao posicionamento 
+de arcos no tabuleiro.
+
+### Solução
+
+A solução é uma função de paragem aos algorimos implementados que tem duas condições, o tabuleiro já não tem mais movimentos disponiveis, ou o objetivo dos número de 
+caixas a serem fechadas foi concluido.
+
+
+| Problema      | Objetivo      |
+| ------------- | ------------- |
+| a)            | 3             |
+| b)            |  7            |
+| c)            |  10           |
+| d)            |  10           |
+| e)            |  20           |
+| f)            |  35           |
 
 
 
