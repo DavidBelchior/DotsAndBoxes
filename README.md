@@ -297,6 +297,120 @@ Isto é:
 
 ## A* (A* Search Algorithm)
 
+Este é um algoritmo de procura usado para encontrar o caminho mais curto entre um ponto inicial e um ponto final, no qual é calculado para cada sucessor o seu valor de 
+f, que é especificado em seguida. Com o valor de f calculado é comparado com os restantes nós expandidos se existe algum com menor valor de f, se houver este é 
+expandido e assim sucessivamente, até se encontrar a melhor solução.
+
+A fórmula de custo tem uma combinação total e é dada por: f(x) = g(x) + h(x), onde:
+
+* g(x): Representa uma função de custo sobre uma posição de origem até a posição
+* h(x): Representa a função heurística. Proposta para estimativa da posição até o destino
+
+No seguimento da especificação do algotimo, de forma a ser melhor compreendido tem-se o seguinte:
+
+1. Nó inicial(s) => ABERTOS. Faz f(s)=0.
+2. Se ABERTOS vazia falha.
+3. Remove o nó de ABERTOS (n) com menor custo (f) e coloca-o em FECHADOS 
+4. Expande o nó n. Calcula o f de cada um dos sucessores. 
+5. Colocar os sucessores que ainda não existem em ABERTOS nem FECHADOS na lista de ABERTOS, por ordem de f colocando os ponteiros para n.
+6. Se algum sucessor for um nó objectivo termina e dá a solução.
+7. Associa aos sucessores já em ABERTOS ou FECHADOS o menor dos valores de f (existente ou agora calculado). Coloca em ABERTOS os sucessores que estavam em FECHADOS cujos valores de f baixaram. Redirecciona para n os ponteiros de todos os nós cujos valores de f baixaram.
+8. Vai para 2.
+
+### Ordenação
+
+Foi desenvolvido uma função que permitisse ordenar os nós pelo seu custo, de forma a serem utilizados neste algoritmo descrito anteriormente.
+
+#### 1. Ordenar-nos
+
+```lisp
+;; teste: (ordenar-nos '(((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 1 NIL) ((((0 0 0) (0 0 1) (0 1 1) (1 1 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 1 2 NIL)))
+;; resultado: (((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 1 NIL) ((((0 0 0) (0 0 1) (0 1 1) (1 1 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 1 2 NIL))
+(defun ordenar-nos (lista)
+  "Função que ordena uma lista de nos"
+  (sort lista #'< :key #'calcular-custo-astar)
+)
+```
+
+### Heurística
+
+A procurar por heurística permite realizar a pesquisa por meio da quantificação de proximidade de um determinado objetivo, no qual a ideia central é evitar considerar 
+todas as alternativas, focando a atenção apenas nas que têm mais interesse, sendo necessário avaliar o “interesse” dos nós, isto é, funções de avaliação.
+Estas regras são específicas do problema em causa e nem sempre resultam.
+
+#### Heurística Base
+
+Neste projeto foi fornecida uma heuristica base, que priviligia os tabuleiros com maior número de caixas fechadas. Sendo a seguinte:
+
+h(x) = o(x) - c(x)
+
+Em que:
+
+* o(x) é o objetivo para esse tabuleiro: o número de caixas a fechar no tabuleiro x
+* c(x) é o número de caixas já fechadas no tabuleiro x
+
+#### Heurística Desenvolvida
+
+Foi desenvolvida uma heurística pelo grupo, que priviligia também os tabuleiros com maior número de caixas fechadas. Sendo a seguinte:
+
+h(x) = (a(x) - o(x)) / (t(x) - o(x))
+
+Em que:
+
+* a(x) é o o número atual de caixas fechadas no tabuleiro x
+* o(x) é o objetivo para esse tabuleiro: o número de caixas a fechar no tabuleiro x
+* t(x) é o número total de caixas fechadas possiveis no tabuleiro x
+
+
+## Limitações Técnicas e Ideias Para Desenvolvimento Futuro
+
+
+## Resultados/ Estatísticas
+
+Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma tabela com as estatisticas de cada algoritmo na resolução de cada problema.
+
+
+### BFS (Breadth First Search)
+
+
+| Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
+| ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
+| a)            | 3             |                |                   |             |            |                           |                  |
+| b)            | 7             |                |                   |             |            |                           |                  |
+| c)            | 10            |                |                   |             |            |                           |                  |
+| d)            | 10            |                |                   |             |            |                           |                  |
+| e)            | 20            |                |                   |             |            |                           |                  |
+| f)            | 35            |                |                   |             |            |                           |                  |
+
+
+### DFS (Depth-first search)
+
+
+| Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
+| ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
+| a)            | 3             |                |                   |             |            |                           |                  |
+| b)            | 7             |                |                   |             |            |                           |                  |
+| c)            | 10            |                |                   |             |            |                           |                  |
+| d)            | 10            |                |                   |             |            |                           |                  |
+| e)            | 20            |                |                   |             |            |                           |                  |
+| f)            | 35            |                |                   |             |            |                           |                  |
+
+
+### A* (A* Search Algorithm)
+
+
+| Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
+| ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
+| a)            | 3             |                |                   |             |            |                           |                  |
+| b)            | 7             |                |                   |             |            |                           |                  |
+| c)            | 10            |                |                   |             |            |                           |                  |
+| d)            | 10            |                |                   |             |            |                           |                  |
+| e)            | 20            |                |                   |             |            |                           |                  |
+| f)            | 35            |                |                   |             |            |                           |                  |
+
+
+## Análise Critica Dos Resultados
+
 
 
 
