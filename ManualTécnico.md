@@ -79,9 +79,6 @@ Que corresponderá ao seguinte tabuleiro:
 
 ![image](https://user-images.githubusercontent.com/76535435/208327837-2cec45d5-bfa6-44e6-9696-75e921695dc8.png)
 
-## Funções e Regras do Jogo
-FAZERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-
 ## Representação de Estados
 
 Este jogo permite que o tabuleiro contenha diversas possibilidades de jogadas e diversos caminhos possiveis até encontrar uma solução, neste caso o problema será 
@@ -411,6 +408,8 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma
 
 ## Análise Critica Dos Resultados
 
+
+## Lista dos Requisitos do Projeto que Não Foram Implementados
 
 
 
