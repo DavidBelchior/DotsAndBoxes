@@ -350,7 +350,7 @@ Em que:
 
 Foi desenvolvida uma heurística pelo grupo, que priviligia também os tabuleiros com maior número de caixas fechadas. Sendo a seguinte:
 
-h(x) = (o(x) - a(x)) / (t(x) - o(x))
+h(x) = (o(x) - a(x)) * (t(x) - o(x))
 
 Em que:
 
@@ -379,8 +379,8 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foram desenvolvidas 
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
-| a)            | 3             |  108           |  8                |    2        |  1/54      | 9.895994                  |  0s              |
-| b)            | 7             |   2            |  1                |    1        |  1/2       | 1.9947598                 |  0s              |
+| a)            | 3             |  108           |  8                |    2        |  1/54      | 9.895994                  |  0ms             |
+| b)            | 7             |   2            |  1                |    1        |  1/2       | 1.9947598                 |  0ms             |
 | c)            | 10            |   -            |  -                | -           |  -         | -                         | -                |
 | d)            | 10            |   -            |  -                | -           |  -         | -                         | -                |
 | e)            | 20            |   -            |  -                | -           |  -         | -                         | -                |
@@ -392,12 +392,12 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foram desenvolvidas 
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Profundidade Máxima| Penetrância | Fator de Ramificação Média|Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|-------------------|-------------|---------------------------|-----------------|
-| a)            | 3             |  93            |  83               | 2           |  2                |  2/93       |  9.15703                  |  0s             |
-| b)            | 7             |  2             |  1                | 1           |  1                |  1/2        |  1.9947598                |  0s             |
-| c)            | 10            |  203           |  90               | 10          |  10               |  10/203     |  1.5400125                |  0s             |
-| d)            | 10            |  992           |  37               | 37          |  37               |  37/992     |  1.1421085                |  0.015s         |
-| e)            | 20            |  758           |  28               | 28          |  28               |  14/379     |  1.198952                 |  0.015s         |
-| f)            | 35            |  5877          |  95               | 95          |  95               |  95/5877    |  1.0852652                |  0.5s           |
+| a)            | 3             |  93            |  83               | 2           |  2                |  2/93       |  9.15703                  |  1ms            |
+| b)            | 7             |  2             |  1                | 1           |  1                |  1/2        |  1.9947598                |  0ms            |
+| c)            | 10            |  203           |  90               | 10          |  10               |  10/203     |  1.5400125                |  2ms            |
+| d)            | 10            |  992           |  37               | 37          |  37               |  37/992     |  1.1421085                |  16ms           |
+| e)            | 20            |  758           |  28               | 28          |  28               |  14/379     |  1.198952                 |  11ms           |
+| f)            | 35            |  5877          |  95               | 95          |  95               |  95/5877    |  1.0852652                |  516ms          |
 
 
 ### A* (A* Search Algorithm)
@@ -406,11 +406,11 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foram desenvolvidas 
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
-| a)            | 3             | 32             | 2                 | 2           | 1/16       |  5.177991                 |  0s              |
-| b)            | 7             | 16             | 1                 | 1           | 1/16       |  15.978241                |  0s              |
-| c)            | 10            | 7926           | 1403              | 8           | 4/3963     |  2.9042545                |  2.875s          |
+| a)            | 3             | 32             | 2                 | 2           | 1/16       |  5.177991                 |  1ms             |
+| b)            | 7             | 16             | 1                 | 1           | 1/16       |  15.978241                |  0ms             |
+| c)            | 10            | 7926           | 1403              | 8           | 4/3963     |  2.9042545                |  3021ms          |
 | d)            | 10            | -              | -                 | -           | -          |  -                        |  -               |
-| e)            | 20            | 7543           | 260               | 16          | 16/7543    |  1.6536994                |  1.203s          |
+| e)            | 20            | 7543           | 260               | 16          | 16/7543    |  1.6536994                |  1400ms          |
 | f)            | 35            | -              | -                 | -           | -          |  -                        |  -               |
 
 
@@ -418,23 +418,30 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foram desenvolvidas 
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
-| a)            | 3             | 137            | 17                | 2           | 2/137      | 11.203394                 | 0s               |
-| b)            | 7             | 16             | 1                 | 1           | 1/16       | 15.978241                 | 0s               |
-| c)            | 10            | -              | -                 | -           | -          | -                         | -                |
-| d)            | 10            | -              | -                 | -           | -          | -                         | -                |
-| e)            | 20            |                |                   |             |            |                           |                  |
-| f)            | 35            |                |                   |             |            |                           |                  |
+| a)            | 3             | 32             | 2                 | 2           | 1/16       |  5.177991                 | 1ms              |
+| b)            | 7             | 16             | 1                 | 1           | 1/16       |  15.978241                | 1ms              |
+| c)            | 10            | 219            | 19                | 8           | 8/219      |  1.7673862                | 3ms              |
+| d)            | 10            | 22200          | 1386              | 27          | 9/7400     |  1.3694822                | 22714ms          |
+| e)            | 20            | 537            | 16                | 16          | 16/537     |  1.3694822                | 8ms              |
+| f)            | 35            | -              | -                 | -           | -          |  -                        | -                |
 
 
 ## Análise Critica Dos Resultados
 
+Primeiramente, quanto ao algoritmo BFS, chegou-se à conclusão que este apenas conseguia resolver os problemas a) e b), uma vez que para os restantes este tería de 
+executar milhares de iterações que resultariam na alocação maxima possivel na stack do programa LispWorks.
 
+De seguida para o algoritomo DFS, este conseguiu resolver todos os problemas uma vez que como executa a procura em profundidade terá uma quantidade significativamente
+menor de iterações do que o DFS, pelo que em distância mais curtas até à solução o DFS terá um melhor performance.
 
+Quanto ao algoritmo A* com a heurística base este consegue resolver os problemas que já se econtram com arcos colocados ou caixas em si completas, uma vez que esta é 
+uma heurística que priviligia os tabuleiros com maior número de caixas fechadas, não conseguindo resolver os problemas d) e f) uma vez que este tem poucos ou nenhuns 
+arcos colocados inicialmente, logo este terá muitos nós com o mesmo custo e assim sucessivamente, o que leva utilizar todos os recursos da memória stack do IDE não 
+conseguindo então resolve-los.
 
-
-
-
-
+Quanto ao algoritmo A* com a heurística desenvolvida pelo grupo base este consegue resolver os problemas que já se econtram com arcos colocados ou caixas em si 
+completas, uma vez que esta também é uma heurística que priviligia os tabuleiros com maior número de caixas fechadas, não conseguindo resolver apenas o problema f) 
+devido ao anteriormente referido.
 
 
 ## Lista dos Requisitos do Projeto que Não Foram Implementados
