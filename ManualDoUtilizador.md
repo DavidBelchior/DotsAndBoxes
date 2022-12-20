@@ -15,7 +15,6 @@
 
 * Introdução
 * Instalação
-* Configuração
 * Interface da Aplicação
 * Resultados
 
@@ -33,8 +32,6 @@ LispWorks é uma Plataforma integrada que serve como ferramenta de desenvolvimen
 
 ![image](https://user-images.githubusercontent.com/76535435/208490754-d3c80aa9-4556-4fae-87b5-a5c755f775ab.png)
 
-## Configuração
-
 
 ## Interface da Aplicação
 
@@ -46,9 +43,18 @@ O menu principal exibe opções básicas inicias, no qual o utilizador pode esco
 
 ```
 
-Selecione uma opcao:
-1 para Experiencias
-2 para Sair
+           ______________________________________________________
+          |                                                      |
+          |                    Dots and Boxes                    |
+          |                      Feito por:                      |
+          |                     Andre Matias                     |
+          |                    David Belchior                    |
+          |                                                      |
+          |                                                      |
+          |            (Pressione 1 para Experiencias)           |
+          |                (Pressione 2 para Sair)               |
+          |______________________________________________________|
+
 Opcao:
 
 --> 
@@ -58,20 +64,23 @@ Opcao:
 ### Menu Algoritmos
 
 O menu referente aos algoritmos, este exibe cinco opções, no qual a primeira corresponde à execução do algoritmo BFS (Breadth First Search), a segunda corresponde à 
-execução do algoritmo DFS (Depth-first search), a terceira corresponde ao algoritmo A*, pelo que esta utiliza a heurística base. A quarta opção corresponde ao 
-algoritmo A*, pelo que esta utiliza a heurística desenvolvida pelo grupo e a última opção corresponde à opção que permite sair do programa.
+execução do algoritmo DFS (Depth-first search), a terceira corresponde ao algoritmo A* e a última opção corresponde à opção que permite sair do programa.
 
 ```
 
-Selecione uma opcao:
-1 para BFS
-2 para DFS
-3.1 para A* heuristica
-3.2 para A* nossa-heuristica
-4 para Sair
+           ______________________________________________________
+          |                                                      |
+          |               Selecione um Algoritmo:                |
+          |                                                      |
+          |                (Pressione 1 para BFS)                |
+          |                (Pressione 2 para DFS)                |
+          |               (Pressione 3 para ASTAR)               |
+          |                (Pressione 4 para Sair)               |
+          |______________________________________________________|
+
 Opcao:
 
---> 
+-->
 
 ```
 
@@ -92,22 +101,66 @@ Como por exemplo:
 
 
 ```
+           ______________________________________________________
+          |                  Insira a Diretoria                  |
+          |                                                      |
+          |                                                      |
+          |             Tenha atencao a / e as aspas             |
+          |                                                      |
+          |______________________________________________________|
 
-Insira a diretoria onde se encontram os problemas com aspas incluidas
+Diretoria:
 
---> 
+-->
+
+```
+
+### Menu Heuristica
+Este menu permite ao utilizador escolher se pretende utilizar a heurística base ou a desenvolvida pelo grupo. 
+
+> **Note**
+Ambas as heurísticas foram anteriormente descritas. 
+
+```
+
+
+           ______________________________________________________
+          |            Insira a Heuristica pretendida            |
+          |                                                      |
+          |                                                      |
+          |                        1-Dada                        |
+          |                    2-Devensolvida                    |
+          |                                                      |
+          |______________________________________________________|
+
+Opcao:
+
+-->
 
 ```
 
 ### Escolha do Problema
 
-Esta secção correponde ao input solicitado ao utilizador, no qual aqui terá de inserir um número no intervalo de números disponibilizados.
+Este menu correponde ao input solicitado ao utilizador, no qual aqui terá de inserir um número no intervalo de números disponibilizados.
 
 > **Note**
 como por exemplo:
 
 ```
-Insira um valor entre 1 e 4
+           ______________________________________________________
+          |                  Escolha o Problema                  |
+          |                                                      |
+          |                    0-Menu-Inicial                    |
+          |                     1-Problema A                     |
+          |                     2-Problema B                     |
+          |                     3-Problema C                     |
+          |                     4-Problema D                     |
+          |                     5-Problema E                     |
+          |                     6-Problema F                     |
+          |                                                      |
+          |______________________________________________________|
+
+Opcao:
 
 -->
 
@@ -122,6 +175,19 @@ Por fim nesta secção será descrita o resultado apresentado no ficheiro soluç
 Exemplo de um resultados obtidos no ficheiro solução:
 
 ```
+Tempo de execucao: 0 ms
+
+Penetrancia: 8/93
+
+Factor de ramificacao: 1.5400125
+
+Numero de nos gerados: 93
+
+Numero de nos expandidos: 8
+
+Caminho: (((((0 0 0) (0 1 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 8) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 7) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 0 1) (0 1 1))) 6) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (0 0 1) (0 1 1))) 5) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 0) (0 0 1) (0 1 1))) 4) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (0 1 0) (0 0 1) (0 1 1))) 3) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 0) (0 1 0) (0 0 1) (0 1 1))) 2) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 0) (0 0 1) (0 1 1))) 1) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) (0 1 1))) 0))
+
+Solucao: ((((0 0 0) (0 1 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 8 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 7 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 0 1) (0 1 1))) 6 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (0 0 1) (0 1 1))) 5 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 0) (0 0 1) (0 1 1))) 4 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (0 1 0) (0 0 1) (0 1 1))) 3 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 0) (0 1 0) (0 0 1) (0 1 1))) 2 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 0) (0 0 1) (0 1 1))) 1 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) (0 1 1))) 0 NIL)))))))))
 
 ```
 
