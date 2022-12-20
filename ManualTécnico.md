@@ -350,21 +350,28 @@ Em que:
 
 Foi desenvolvida uma heurística pelo grupo, que priviligia também os tabuleiros com maior número de caixas fechadas. Sendo a seguinte:
 
-h(x) = (a(x) - o(x)) / (t(x) - o(x))
+h(x) = (o(x) - a(x)) / (t(x) - o(x))
 
 Em que:
 
-* a(x) é o o número atual de caixas fechadas no tabuleiro x
+* a(x) é o número atual de caixas fechadas no tabuleiro x
 * o(x) é o objetivo para esse tabuleiro: o número de caixas a fechar no tabuleiro x
-* t(x) é o número total de caixas fechadas possiveis no tabuleiro x
+* t(x) é o número total de caixas fechadas possíveis no tabuleiro x
 
 
 ## Limitações Técnicas e Ideias Para Desenvolvimento Futuro
 
+No desenvolvimento desta fase do projeto, deparamo-nos com algumas limitações, no qual identificamos alguns problemas com o lispworks devido à reduzida memoria que 
+este apresenta.
+Obtivemos também algumas dificuldades na programação neste IDE uma vez que este é um pouco limitado em questão de verificações de erros, debug e não previne muito 
+erros de usabilidade.
+
+Propomos um futuro desenvolvimento em linguagem python no IDE pycharm para uma melhor compreensão e experiência.
+
 
 ## Resultados/ Estatísticas
 
-Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma tabela com as estatisticas de cada algoritmo na resolução de cada problema.
+Para poder comparar a eficácia dos 4 algoritmos funcionais foram desenvolvidas tatabelas com as estatisticas de cada algoritmo na resolução de cada problema.
 
 
 ### BFS (Breadth First Search)
@@ -389,8 +396,8 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma
 | b)            | 7             |  2             |  1                | 1           |  1                |  1/2        |  1.9947598                |  0s             |
 | c)            | 10            |  203           |  90               | 10          |  10               |  10/203     |  1.5400125                |  0s             |
 | d)            | 10            |  992           |  37               | 37          |  37               |  37/992     |  1.1421085                |  0.015s         |
-| e)            | 20            |  758           |  28               | 24          |  30               |  14/379     |  1.198952                 |  0.015s         |
-| f)            | 35            |  5877          |  95               | 92          |  100              |  95/5877    |  1.0852652                |                 |
+| e)            | 20            |  758           |  28               | 28          |  28               |  14/379     |  1.198952                 |  0.015s         |
+| f)            | 35            |  5877          |  95               | 95          |  95               |  95/5877    |  1.0852652                |  0.5s           |
 
 
 ### A* (A* Search Algorithm)
@@ -399,22 +406,22 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
-| a)            | 3             |                |                   |             |            |                           |                  |
-| b)            | 7             |                |                   |             |            |                           |                  |
-| c)            | 10            |                |                   |             |            |                           |                  |
-| d)            | 10            |                |                   |             |            |                           |                  |
-| e)            | 20            |                |                   |             |            |                           |                  |
-| f)            | 35            |                |                   |             |            |                           |                  |
+| a)            | 3             | 32             | 2                 | 2           | 1/16       |  5.177991                 |  0s              |
+| b)            | 7             | 16             | 1                 | 1           | 1/16       |  15.978241                |  0s              |
+| c)            | 10            | 7926           | 1403              | 8           | 4/3963     |  2.9042545                |  2.875s          |
+| d)            | 10            | -              | -                 | -           | -          |  -                        |  -               |
+| e)            | 20            | 7543           | 260               | 16          | 16/7543    |  1.6536994                |  1.203s          |
+| f)            | 35            | -              | -                 | -           | -          |  -                        |  -               |
 
 
 #### Heuristica Desenvolvida pelo grupo
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
-| a)            | 3             |                |                   |             |            |                           |                  |
-| b)            | 7             |                |                   |             |            |                           |                  |
-| c)            | 10            |                |                   |             |            |                           |                  |
-| d)            | 10            |                |                   |             |            |                           |                  |
+| a)            | 3             | 137            | 17                | 2           | 2/137      | 11.203394                 | 0s               |
+| b)            | 7             | 16             | 1                 | 1           | 1/16       | 15.978241                 | 0s               |
+| c)            | 10            | -              | -                 | -           | -          | -                         | -                |
+| d)            | 10            | -              | -                 | -           | -          | -                         | -                |
 | e)            | 20            |                |                   |             |            |                           |                  |
 | f)            | 35            |                |                   |             |            |                           |                  |
 
