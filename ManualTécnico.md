@@ -372,16 +372,30 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
-| a)            | 3             |                |                   |             |            |                           |                  |
-| b)            | 7             |                |                   |             |            |                           |                  |
-| c)            | 10            |                |                   |             |            |                           |                  |
-| d)            | 10            |                |                   |             |            |                           |                  |
-| e)            | 20            |                |                   |             |            |                           |                  |
-| f)            | 35            |                |                   |             |            |                           |                  |
+| a)            | 3             |  108           |  8                |    2        |  1/54      | 9.895994                  |  0s              |
+| b)            | 7             |   2            |  1                |    1        |  1/2       | 1.9947598                 |  0s              |
+| c)            | 10            |   -            |  -                | -           |  -         | -                         | -                |
+| d)            | 10            |   -            |  -                | -           |  -         | -                         | -                |
+| e)            | 20            |   -            |  -                | -           |  -         | -                         | -                |
+| f)            | 35            |   -            |  -                | -           |  -         | -                         | -                |
 
 
 ### DFS (Depth-first search)
 
+
+| Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Profundidade Máxima| Penetrância | Fator de Ramificação Média|Tempo De Execução|
+| ------------- | ------------- | -------------  |-------------------|-------------|-------------------|-------------|---------------------------|-----------------|
+| a)            | 3             |  93            |  83               | 2           |  2                |  2/93       |  9.15703                  |  0s             |
+| b)            | 7             |  2             |  1                | 1           |  1                |  1/2        |  1.9947598                |  0s             |
+| c)            | 10            |  203           |  90               | 10          |  10               |  10/203     |  1.5400125                |  0s             |
+| d)            | 10            |  992           |  37               | 37          |  37               |  37/992     |  1.1421085                |  0.015s         |
+| e)            | 20            |  758           |  28               | 24          |  30               |  14/379     |  1.198952                 |  0.015s         |
+| f)            | 35            |  5877          |  95               | 92          |  100              |  95/5877    |  1.0852652                |                 |
+
+
+### A* (A* Search Algorithm)
+
+#### Heuristica Base
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
@@ -393,8 +407,7 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma
 | f)            | 35            |                |                   |             |            |                           |                  |
 
 
-### A* (A* Search Algorithm)
-
+#### Heuristica Desenvolvida pelo grupo
 
 | Problema      | Objetivo      | Nº Nós Gerados | Nº Nós Expandidos |Profundidade |Penetrância | Fator de Ramificação Média| Tempo De Execução|
 | ------------- | ------------- | -------------  |-------------------|-------------|------------|---------------------------|------------------|
@@ -409,7 +422,52 @@ Para poder comparar a eficácia dos 4 algoritmos funcionais foi desenvolvida uma
 ## Análise Critica Dos Resultados
 
 
+
+
+
+
+
+
+
+
 ## Lista dos Requisitos do Projeto que Não Foram Implementados
 
+Desenvolvimento dos seguintes algoritmos:
+
+* IDA*
+* RBFS
+* SMA*
+
+
+
+## Anexos
+
+Poblema a)
+
+![image](https://user-images.githubusercontent.com/76535435/208658903-c4306d7a-13de-4654-b512-8738e48a6ec5.png)
+
+Poblema b)
+
+![image](https://user-images.githubusercontent.com/76535435/208658995-5bf90f4a-5554-4074-8245-f62decabfa34.png)
+
+
+Poblema c)
+
+![image](https://user-images.githubusercontent.com/76535435/208659033-75ed55da-b406-4573-85a4-9ddab0786c90.png)
+
+
+Poblema d)
+
+![image](https://user-images.githubusercontent.com/76535435/208659058-4edbe90d-cef9-4be1-b0a0-e7d34a228c15.png)
+
+
+Poblema e)
+
+![image](https://user-images.githubusercontent.com/76535435/208659099-bafe4fff-8937-4f3e-95d7-99fc96466457.png)
+
+
+Poblema f)
+
+![image](https://user-images.githubusercontent.com/76535435/208659230-a61354ac-bcce-4ee8-81da-61c446cdddd0.png)
 
 
