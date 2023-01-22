@@ -164,8 +164,39 @@ Diretoria:
 ### Como Jogar
 Terá de inserir uma posição e o tipo de arco que quer inserir (vertical ou horizontal) ou seja por exemplo:
 
-
+Antes:
 ```
+           .--.--.--.--.  .--.
+           |  |  |  |  |     |  
+           .--.--.--.--.--.  .
+              |  |  |  |  |  |  
+           .  .--.--.--.--.  .
+           |  |  |  |  |  |  |  
+           .  .--.  .--.--.  .
+              |  |  |     |  |  
+           .--.--.  .  .  .  .
+              |     |     |     
+           .  .--.--.--.--.--.
+
+           Jogada do Humano:
+           Linha:1
+           Coluna:5
+           Horientacao (vertical ou horizontal):horizontal
+```
+
+Depois:
+```
+           .--.--.--.--.--.--.
+           |  |  |  |  |     |  
+           .--.--.--.--.--.  .
+              |  |  |  |  |  |  
+           .  .--.--.--.--.  .
+           |  |  |  |  |  |  |  
+           .  .--.  .--.--.  .
+              |  |  |     |  |  
+           .--.--.  .  .  .  .
+              |     |     |     
+           .  .--.--.--.--.--.
 
 ```
 
