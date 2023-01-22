@@ -22,8 +22,8 @@
 ## Introdução
 Este documento corresponde ao manual do utilizador do projeto Dots and Boxes que é um jogo para dois jogadores. Foi publicado pela primeira vez no século 19 pelo matemático francês Édouard Lucas, que o chamou de la pipopipette.
 
-Neste documento serão disponibilizadas informações, que tem como objetivo principal ajudar os utilizadores a compreender como interagir com o sistema desenvolvido  
-(Jogo- Dots and Boxes) e compreender como esta funciona.
+Neste documento serão disponibilizadas informações, que tem como objetivo principal ajudar os utilizadores a compreender 
+como interagir com o sistema desenvolvido (Jogo- Dots and Boxes) e compreender como este funciona.
 
 ## Instalação
 
@@ -36,23 +36,23 @@ LispWorks é uma Plataforma integrada que serve como ferramenta de desenvolvimen
 
 ## Interface da Aplicação
 
-De seguida será apresentado os respetivos menus que interagem com o utilizador e a explicação de comos estes funcionam, como também os passos necessários a realizar para a execução de um dos algoritmos pretendidos:
+De seguida será apresentado os respetivos menus que interagem com o utilizador e a explicação de comos estes funcionam, como também os passos necessários para jogar.
 
 ### Menu Principal
 
-O menu principal exibe opções básicas inicias, no qual o utilizador pode escolher uma das duas opções, a primeira para realizar experiências que corresponde aos algoritmos e a outra opção que permite sair do programa.
+O menu principal exibe opções básicas inicias, no qual o utilizador pode escolher uma das duas opções, a primeira para jogar e a outra opção que permite sair do programa.
 
 ```
 
            ______________________________________________________
           |                                                      |
           |                    Dots and Boxes                    |
-          |                      Feito por:                      |
+          |                   Desenvolvido por:                  |
           |                     Andre Matias                     |
           |                    David Belchior                    |
           |                                                      |
           |                                                      |
-          |            (Pressione 1 para Experiencias)           |
+          |                (Pressione 1 para Jogar)              |
           |                (Pressione 2 para Sair)               |
           |______________________________________________________|
 
@@ -62,32 +62,77 @@ Opcao:
 
 ```
 
-### Menu Algoritmos
+### Menu Tipo-de-Jogo
 
-O menu referente aos algoritmos, este exibe cinco opções, no qual a primeira corresponde à execução do algoritmo BFS (Breadth First Search), a segunda corresponde à 
-execução do algoritmo DFS (Depth-first search), a terceira corresponde ao algoritmo A* e a última opção corresponde à opção que permite sair do programa.
+Este menu permite ao utilizador escolher como pretende jogar, ou seja humano vs maquina, começando o  humano a jogar ou vice-versa e se pretende um jogo em que sejam duas máquinas a jogar uma contra a outra.
 
 ```
 
-           ______________________________________________________
-          |                                                      |
-          |               Selecione um Algoritmo:                |
-          |                                                      |
-          |                (Pressione 1 para BFS)                |
-          |                (Pressione 2 para DFS)                |
-          |               (Pressione 3 para ASTAR)               |
-          |                (Pressione 4 para Sair)               |
-          |______________________________________________________|
+           ________________________________________________________
+          |                                                        |
+          |                Selecione uma Opcao de Jogo:            |
+          |                                                        |
+          | (Pressione 1 para Humano vs Maquina -->Humano Comeca)  |
+          | (Pressione 2 para Humano vs Maquina -->Maquina Comeca) |
+          |              (Pressione 3 Maquina vs Maquina)          |
+          |                   (Pressione 4 para Sair)              |
+          |________________________________________________________|
 
 Opcao:
 
--->
+--> 
 
 ```
 
+### Menu Tempo-Jogada
+
+Este menu permite ao utilizador dar um tempo de cada jogada entre 1 e 20 segundos e se pretender sair terá de inserir o 
+número 0.
+
+```
+           ______________________________________________________
+          |                                                      |
+          | Insira um tempo de cada jogada entre 1 e 20 segundos:|
+          |                             Ou                       |
+          |                  (Pressione 0 para Sair)             |
+          |______________________________________________________|
+
+tempo:
+
+--> 
+
+```
+
+### Alterar Profundidade
+Se pretender alterar a profundidade máxima da jogada terá de ir até ao seguinte pedaço de código:
+
+```lisp
+(defun jogada-computador (estado tempo &optional (jogador *jogador1*) (inicial t))
+  "Permite ao computador jogar."
+  (terpri)
+  (cond ((no-preenchidop estado) (setq *primeiro-estado* nil)(PrintDaMatriz (no-estado estado)))
+        (t  (PrintDaMatriz (no-estado estado))
+            (printar-detalhes inicial)
+            (valores-iniciais jogador)
+            (terpri)
+            (format t "Jogada do Computador ~a" jogador)
+            (terpri)
+            (AlfaBeta estado most-negative-fixnum most-positive-fixnum 3 tempo jogador)
+            
+            ;;(escreve-resultado estado jogador 20000)
+        )
+  ) 
+)
+
+```
+
+> **Warning**
+* (AlfaBeta estado most-negative-fixnum most-positive-fixnum 3 tempo jogador) --> O valor "3" é ai que terá de alterar o 
+valor para ter uma profundidade diferente
+
 
 ### Inserção da Diretoria
-
+#FALTA FAZER SE FOR NECESSÁRIO
 Esta secção correponde ao input solicitado ao utilizador, no qual aqui terá de inserir o caminho/diretoria onde guardou o ficheiro que contém os problemas iniciais.
 A inserção deste caminho terá de seguir as seguintes normas:
 
@@ -116,86 +161,21 @@ Diretoria:
 
 ```
 
-### Menu Heuristica
-Este menu permite ao utilizador escolher se pretende utilizar a heurística base ou a desenvolvida pelo grupo. 
+### Como Jogar
+Terá de inserir uma posição e o tipo de arco que quer inserir (vertical ou horizontal) ou seja por exemplo:
 
-> **Note**
-Ambas as heurísticas foram anteriormente descritas. 
 
 ```
 
-
-           ______________________________________________________
-          |            Insira a Heuristica pretendida            |
-          |                                                      |
-          |                                                      |
-          |                        1-Dada                        |
-          |                    2-Devensolvida                    |
-          |                                                      |
-          |______________________________________________________|
-
-Opcao:
-
--->
-
 ```
 
-### Escolha do Problema
-
-Este menu correponde ao input solicitado ao utilizador, no qual aqui terá de inserir um número no intervalo de números disponibilizados.
-
-> **Note**
-como por exemplo:
-
-```
-           ______________________________________________________
-          |                  Escolha o Problema                  |
-          |                                                      |
-          |                    0-Menu-Inicial                    |
-          |                     1-Problema A                     |
-          |                     2-Problema B                     |
-          |                     3-Problema C                     |
-          |                     4-Problema D                     |
-          |                     5-Problema E                     |
-          |                     6-Problema F                     |
-          |                                                      |
-          |______________________________________________________|
-
-Opcao:
-
--->
-
-```
-No qual, neste caso o utilizador apenas poderá colocar os seguintes números 1, 2, 3 ou 4.
 
 ## Limitações do programa
+Um ponto que deveria ser melhorado seria a jogabilidade do utilizador, tal como a forma de inserção de uma jogada, uma vez 
+que deveria ser ainda mais "direto", tendo de passar por 3 passos. Outro ponto seria na representação do tabuleiro, como 
+esta em formato consola torna-se dificil para o utilizador saber quais são as caixas que ele fechou, uma vez que não existe 
+a representação dos arcos com diferentes cores por exemplo.
 
-
-
-
-
-## Resultado
-
-Por fim nesta secção será descrita o resultado apresentado no ficheiro solução que é o resultado obtido através dos algoritmos implementados que também são visualizados no output da consola.
-
-Exemplo de um resultados obtidos no ficheiro solução:
-
-```
-Tempo de execucao: 0 ms
-
-Penetrancia: 8/93
-
-Factor de ramificacao: 1.5400125
-
-Numero de nos gerados: 93
-
-Numero de nos expandidos: 8
-
-Caminho: (((((0 0 0) (0 1 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 8) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 7) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 0 1) (0 1 1))) 6) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (0 0 1) (0 1 1))) 5) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 0) (0 0 1) (0 1 1))) 4) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (0 1 0) (0 0 1) (0 1 1))) 3) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 0) (0 1 0) (0 0 1) (0 1 1))) 2) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 0) (0 0 1) (0 1 1))) 1) ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) (0 1 1))) 0))
-
-Solucao: ((((0 0 0) (0 1 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 8 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 1 1) (0 1 1))) 7 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (1 0 1) (0 1 1))) 6 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 1) (0 0 1) (0 1 1))) 5 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (1 1 0) (0 0 1) (0 1 1))) 4 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 1) (0 1 0) (0 0 1) (0 1 1))) 3 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 1 0) (0 1 0) (0 0 1) (0 1 1))) 2 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 0) (0 0 1) (0 1 1))) 1 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) (0 1 1))) 0 NIL)))))))))
-
-```
 
 
 
