@@ -144,14 +144,12 @@ Do tipo horizontal: (((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) 
 
 A composição do nó é uma lista composta por:
 
-(Tabuleiro | Profundidade | Heuristica | Pai)
+(Estado | número de quadrados | Profundidade do Nó)
 
 ```lisp
-;; teste: (cria-no '(((0 0 0) (0 0 1) (0 1 1) (0 0 1))((0 0 0) (0 1 1) (1 0 1) (0 1 1))))
-;; resultado: ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL)
-(defun cria-no (tabuleiro &optional (g 0) (heuristica nil) (pai nil))
-  "Cria um no com o tabuleiro inserido, com a profundidade 0 se nao inserida, com o valor da heuristica e com o no pai."
-  (list tabuleiro g heuristica pai)
+(defun cria-no (estado no-quadrados prof-no)
+  "Cria um novo no"
+  (list estado no-quadrados prof-no) ;; cria um novo no com o estado, o numero de quadrados fechados e a profundidade
 )
 ```
 
@@ -171,39 +169,34 @@ Nomeadamente:
 A Sucessão de um determinado nó, é um conjunto de movimentos permitidos de inserção de um arco (vertical ou horizontal) no tabuleiro.
 
 ```lisp
-;; teste: (novo-sucessor '((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL) 'verticais)
-;; resultado(apenas um no): ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 1) (1 0 1) (0 1 1))) 1 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL))
-(defun novo-sucessor (no operador  &optional (obj nil) (fn-heuristica nil))
+;; jogar mais que uma vez 
+;; ordenar pelo numero de quadrados fechados
+(defun novos-sucessores (estado jogador prof-no)
   "Cria um novo no com o operador aplicado ao no"
-  (let ((estado (no-estado no)) 
-        (profundidade (no-profundidade no))
-        (pai no)
-        (sucessores nil)
-  )
-    "verifica qual o operador"
-    (cond ((eq operador 'verticais) (setq sucessores (gerar-sucessores estado operador)))
-          ((eq operador 'horizontais) (setq sucessores (gerar-sucessores estado operador)))
-    )
-    "cria um novo no para cada sucessor"
-    (cond ((and sucessores (not (null fn-heuristica))) (mapcar (lambda (x) (cria-no x (+ profundidade 1) (funcall fn-heuristica x obj) pai)) sucessores))
-          (sucessores (mapcar (lambda (x) (cria-no x (+ profundidade 1) nil pai)) sucessores))
-    )
+  (let ((sucessores nil) ;; lista com os sucessores
+        (nos-sucessores nil) ;;
+        (no-quadrados (no-numero-de-caixas estado));; numero de quadrados fechados no estado
+        (contagem-de-quadrados (fn-numero-de-quadradodos estado))) ;; numero de quadrados fechados
+
+    (cond ((no-preenchidop estado) (list estado)) ;; se o estado estiver preenchido retorna o estado
+          (t "Cria uma lista com os sucessores"
+            (setq sucessores (append (gerar-sucessores (no-estado estado) 'verticais jogador) (gerar-sucessores (no-estado estado) 'horizontais jogador)))
+  
+            "cria um novo no para cada sucessor"
+            (setq nos-sucessores (mapcar (lambda (x) (cria-no x (cria-no-quadrados-fechados x contagem-de-quadrados no-quadrados jogador) prof-no)) sucessores))
+          
+            "joga mais que uma vez"
+            (remove-duplicates (jogar-outra-vez contagem-de-quadrados nos-sucessores jogador prof-no) :test 'equal))
+    ) 
   )
 )
 ```
 
 ```lisp
-;; teste: (sucessores '((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL) (operadores) 'dfs nil nil 2)
-;; resultado(um no sucessor): ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((1 0 0) (0 1 1) (1 0 1) (0 1 1))) 1 NIL ((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 1) (1 0 1) (0 1 1))) 0 NIL NIL))
-(defun sucessores (node operators algoritmo &optional (obj nil) (fn-heuristica nil) depth)
-  "Função que retorna uma lista com os sucessores de um no dependendo do algoritmo"
-  (cond ((eq algoritmo 'bfs) (append (novo-sucessor node (first operators)) (novo-sucessor node (second operators))))
-        ((eq algoritmo 'dfs) 
-          (cond ((< (no-profundidade node) depth) (append (novo-sucessor node (first operators)) (novo-sucessor node (second operators))))
-                (T nil)
-          )
-        )
-        ((eq algoritmo 'astar) (append (novo-sucessor node (first operators) obj fn-heuristica) (novo-sucessor node (second operators) obj fn-heuristica)))
+(defun gerar-sucessores (tabuleiro operador jogador)
+  "Função que gera os sucessores de um tabuleiro"
+  (cond((eq operador 'verticais) (mapcar (lambda (x) (cons (get-arcos-horizontais tabuleiro) (list (arco-na-posicao (first x) (second x) (get-arcos-verticais tabuleiro) jogador)))) (espacos-vazios tabuleiro operador) )) 
+       ((eq operador 'horizontais) (mapcar (lambda (x) (cons (arco-na-posicao (second x) (first x)  (get-arcos-horizontais tabuleiro) jogador) (list (get-arcos-verticais tabuleiro)))) (espacos-vazios tabuleiro operador) ))
   )
 )
 ```
@@ -259,41 +252,84 @@ function alphabeta(node, depth, alpha, beta, maximizingPlayer)
 
 
 ### Implementação
-# FAZER O QUE FALTA
 ```lisp
-;; procura em largura
-;; teste: (bfs '((((0 0 0) (0 0 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 0 1) (0 1 1))) 0 nil) 'no-solucaop 'sucessores (operadores) 3)
-;; resultado: ((((0 0 0) (0 1 1) (0 1 1) (0 0 1)) ((0 0 0) (0 1 0) (0 1 1) (0 1 1))) 2 NIL (((# # # #) (# # # #)) 1 NIL ((# #) 0 NIL)))
-(defun bfs (initialNode fnSolucao fnSucessores operators obj &optional (abertos nil) (fechados nil))
-  (cond ((and (null abertos) (null fechados)) (bfs initialNode fnSolucao fnSucessores operators obj (list initialnode) fechados))
-        ((null abertos) nil)
-        (T 
-          (let* ((n-fechados (append fechados (list (car abertos)))) (next-nodes (nos-unicos-bfs n-fechados (funcall fnSucessores (car abertos) operators 'bfs))))
-              (let ((no-obj-val (no-obj next-nodes fnSolucao obj)))
-              (format t "abertos: ~a~%" (length abertos))
-              (format t "fechados: ~a~%" (length n-fechados))
-              (format t "depth: ~a~%" (no-profundidade (car abertos)))
-              (terpri)
-                (cond ((not (null no-obj-val)) no-obj-val)
-                      (t (bfs initialNode fnSolucao fnSucessores operators obj (abertos-bfs (cdr abertos) next-nodes) n-fechados))
-                )
+(defun AlfaBeta (estado alfa beta profundidade tempo &optional (jogador 1) (prof-no 0) )
+    "Algoritmo alfabeta"
+    (cond ((tempo-limite tempo prof-no) (avaliacao estado)) ;; se o tempo limite for atingido retorna a avaliacao do estado
+        ((no-preenchidop estado) (avaliacao estado)) ;; se o estado estiver preenchido retorna a avaliacao do estado
+        ((= prof-no profundidade ) (avaliacao estado)) ;; se a profundidade for atingida retorna a avaliacao do estado
+        (t (let ((estados-sucessores(novos-sucessores estado jogador (1+ prof-no)))) ;; cria uma lista com os estados sucessores
+              (cond ((= (mod prof-no 2) 0) (AlfaBetaMax alfa beta (1+ prof-no) profundidade (sort estados-sucessores #'> :key #'avaliacao) jogador tempo)) ;; se a profundidade for par chama a funcao AlfaBetaMax
+                    (t (AlfaBetaMin alfa beta (1+ prof-no) profundidade (sort estados-sucessores #'< :key #'avaliacao) jogador tempo));; se a profundidade for impar chama a funcao AlfaBetaMin
               )
-          )
+            )
+        )
+    ) 
+)
+
+
+(defun AlfaBetaMax (alfa beta prof-no profundidade sucessores jogador tempo)
+  "Algoritmo alfabeta max"
+  (cond ((null sucessores) alfa) ;; Se a lista de sucessores estiver vazia retorna o alfa 
+        ((>= alfa beta) (incf *cortes-beta*) beta) ;; se o alfa for maior ou igual ao beta incrementa o numero de cortes beta e retorna o beta
+        (t  (let ((novo-alfa (max alfa (AlfaBeta (car sucessores) alfa beta profundidade tempo (troca-jogador jogador) prof-no)))) ;; cria uma variavel com o novo alfa
+              (cond ((= prof-no 1) (guardar-solucao (car sucessores) novo-alfa) (AlfaBetaMax novo-alfa beta prof-no profundidade (cdr sucessores) jogador tempo)) ;; se a profundidade for 1 guarda a solucao e chama a funcao AlfaBetaMax
+                    (t (AlfaBetaMax novo-alfa beta prof-no profundidade (cdr sucessores) jogador tempo)) ;; se a profundidade nao for 1 chama a funcao AlfaBetaMax
+              )
+            )
         )
   )
 )
+
+
+(defun AlfaBetaMin (alfa beta prof-no profundidade sucessores jogador tempo)
+   "Algoritmo alfabeta min"
+  (cond ((null sucessores) beta) ;;Se a lista de sucessores estiver vazia retorna o beta
+        ((>= alfa beta) (incf *cortes-alfa*) alfa) ;; se o alfa for maior ou igual ao beta incrementa o numero de cortes alfa e retorna o alfa
+        (t (AlfaBetaMin alfa (min beta (AlfaBeta (car sucessores) alfa beta profundidade tempo (troca-jogador jogador) prof-no)) prof-no profundidade (cdr sucessores) jogador tempo)) ;; chama a funcao AlfaBetaMin
+  )
+) 
+
+
+```
+
+### Funções Auxiliares
+```lisp
+;;;; guarda a solucao se o algoritmo encontrar uma solucao e tiver uma melhor heuritica
+(defun guardar-solucao (estado novo-alfa)
+   "Guarda uma solução se o alfa for maior que o valor atual"
+  (cond ((> novo-alfa *valor*) (setq *valor* novo-alfa)(setq *primeiro-estado* estado));; se o alfa for maior que o valor atual guarda a solucao
+        (t NIL) ;; se o alfa for menor que o valor atual nao guarda a solucao
+  )
+)
+
+(defun no-preenchidop (no)
+  "Verifica se um no esta totalmente preenchido"
+  (cond ((= (fn-numero-de-quadradodos no) 30) T)
+        (T nil)
+  )
+)
+
+(defun tempo-limite (tempo prof-no)
+  "Funcao que verifica se o tempo limite foi atingido"
+  (incf *numero-de-nos-analisados*) ;; incrementa o numero de nos analisados
+  (if (= prof-no 0) (setf *inicio* (get-internal-real-time))) ;; se for a primeira chamada do algoritmo, guarda o tempo inicial
+  (if (<= (- tempo 700) (- (get-internal-real-time) *inicio*)) t nil) ;; se o tempo limite for atingido retorna t, senao retorna nil
+)
+
 ```
 
 
+##### Função de Avaliação
 
-### Funções Auxiliares
+Esta função de avaliação simples, é baseada no número de caixas completadas per cada jogador. Isso permite que o algoritmo de jogo priorize ações que aumentam o número de caixas completadas pelo jogador pretendido. Como se pode observar:
 
-#### Função de Avaliação
-
-# FAZER O QUE FALTA
-
-
-
+```lisp
+(defun avaliacao (no)
+  "Função que retorna o valor da heuristica"
+  (if (= *primeiro-jogador* 1) (- (first (no-numero-de-caixas no)) (second (no-numero-de-caixas no)))  (- (second (no-numero-de-caixas no)) (first (no-numero-de-caixas no))))
+)
+```
 
 ## Descrição dos tipos abstratos usados no programa
 # FAZER O QUE FALTA
@@ -313,46 +349,129 @@ Propomos um futuro desenvolvimento em linguagem python no IDE pycharm para uma m
 
 
 
-
 ## Análise Critica Dos Resultados
-# FAZER O QUE FALTA
-
-Primeiramente, quanto ao algoritmo BFS, chegou-se à conclusão que este apenas conseguia resolver os problemas a) e b), uma vez que para os restantes este tería de 
-executar milhares de iterações que resultariam na alocação maxima possivel na stack do programa LispWorks.
-
-De seguida para o algoritomo DFS, este conseguiu resolver todos os problemas uma vez que como executa a procura em profundidade terá uma quantidade significativamente
-menor de iterações do que o DFS, pelo que em distância mais curtas até à solução o DFS terá um melhor performance.
-
-Quanto ao algoritmo A* com a heurística base este consegue resolver os problemas que já se econtram com arcos colocados ou caixas em si completas, uma vez que esta é 
-uma heurística que priviligia os tabuleiros com maior número de caixas fechadas, não conseguindo resolver os problemas d) e f) uma vez que este tem poucos ou nenhuns 
-arcos colocados inicialmente, logo este terá muitos nós com o mesmo custo e assim sucessivamente, o que leva utilizar todos os recursos da memória stack do IDE não 
-conseguindo então resolve-los.
-
-Quanto ao algoritmo A* com a heurística desenvolvida pelo grupo base este consegue resolver os problemas que já se econtram com arcos colocados ou caixas em si 
-completas, uma vez que esta também é uma heurística que priviligia os tabuleiros com maior número de caixas fechadas, não conseguindo resolver apenas o problema f) 
-devido ao anteriormente referido.
-
+Como é possivel obsevar na análise Análise estatística em baixo aquando do aumento da profundidade o número de nós 
+analisados, o número de cortes dos dois tipos e o tempo de execução também são aumentados.
 
 
 ## Análise estatística acerca de uma execução do programa contra um adversário humano
-# FAZER O QUE FALTA
 
-Para poder comparar a eficácia dos 4 algoritmos funcionais foram desenvolvidas tatabelas com as estatisticas de cada algoritmo na resolução de cada problema.
+Por exemplo para uma jogada com tempo limite de 1 segundo e profundidade máxima de 3 obteve o seguinte resultado:
+```
+    Jogada do Computador 1
 
+    .--.--.--.--.  .--.
+    |  |  |  |  |     |  
+    .--.--.--.--.--.  .
+       |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+    |  |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+    |  |  |  |     |  |  
+    .--.--.--.  .  .  .
+       |  |  |     |     
+    .  .--.--.--.--.--.
 
-### Resultados
+    Tempo de execucao: 309 ms
 
+    Jogada: (((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 1 0) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0)))
 
-| Valor      | Profundidade      | Nº De Cortes (de cada tipo) | Tempo Limite de cada Jogada |
-| -----------| ----------------- | --------------------------  |-----------------------------|
-|            |                   |                             |                             |   
+    Novo estado: ((((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 1 0) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0))) (12 4) 1)
 
+    Numero de cortes alfa: 0
 
+    Numero de cortes beta: 34
 
+    Numero de nos analisados: 232
+```
 
+Para um jogada com tempo de 20 segundos e profundidade 3 obteve-se o seguinte resultado:
 
-## Anexos
-# FAZER O QUE FALTA
+```
+    Jogada do Computador 1
 
+    .--.--.--.--.  .--.
+    |  |  |  |  |     |  
+    .--.--.--.--.--.  .
+       |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+    |  |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+       |  |  |     |  |  
+    .--.--.--.  .  .  .
+    |  |  |  |     |     
+    .  .--.--.--.--.--.
+
+    Tempo de execucao: 9549 ms
+
+    Jogada: (((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 0 1) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0)))
+
+    Novo estado: ((((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 0 1) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0))) (12 4) 1)
+
+    Numero de cortes alfa: 118
+
+    Numero de cortes beta: 83
+
+    Numero de nos analisados: 4151
+```
+
+Para um jogada com tempo de 1 segundos e profundidade 4 obteve-se o seguinte resultado:
+
+```
+    Jogada do Computador 1
+
+    .--.--.--.--.  .--.
+    |  |  |  |  |     |  
+    .--.--.--.--.--.  .
+       |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+    |  |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+    |  |  |  |     |  |  
+    .--.--.--.  .  .  .
+       |  |  |     |     
+    .  .--.--.--.--.--.
+
+    Tempo de execucao: 385 ms
+
+    Jogada: (((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 1 0) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0)))
+
+    Novo estado: ((((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 1 0) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0))) (12 4) 1)
+
+    Numero de cortes alfa: 21
+
+    Numero de cortes beta: 34
+
+    Numero de nos analisados: 809
+```
+
+Para um jogada com tempo de 20 segundos e profundidade 4 obteve-se o seguinte resultado:
+```
+    Jogada do Computador 1
+
+    .--.--.--.--.  .--.
+    |  |  |  |  |     |  
+    .--.--.--.--.--.  .
+       |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+    |  |  |  |  |  |  |  
+    .  .--.--.--.--.  .
+       |  |  |     |  |  
+    .--.--.--.  .  .  .
+    |  |  |  |     |     
+    .  .--.--.--.--.--.
+
+    Tempo de execucao: 19375 ms
+
+    Jogada: (((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 0 1) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0)))
+
+    Novo estado: ((((1 2 1 1 0 2) (2 1 1 1 1 0) (0 2 1 1 2 0) (0 1 1 2 2 0) (1 2 1 0 0 0) (0 1 2 1 2 1)) ((1 0 1 0 1) (2 1 1 2 2) (2 1 1 2 1) (1 2 2 1 1) (1 2 2 0 0) (0 1 2 1 2) (2 2 1 2 0))) (12 4) 1)
+
+    Numero de cortes alfa: 2166
+
+    Numero de cortes beta: 83
+
+    Numero de nos analisados: 6391
+```
 
 
