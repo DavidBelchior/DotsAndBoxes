@@ -331,12 +331,6 @@ Esta função de avaliação simples, é baseada no número de caixas completada
 )
 ```
 
-## Descrição dos tipos abstratos usados no programa
-# FAZER O QUE FALTA
-
-
-
-
 
 ## Limitações Técnicas e Ideias Para Desenvolvimento Futuro
 
