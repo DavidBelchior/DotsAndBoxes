@@ -132,7 +132,7 @@ valor para ter uma profundidade diferente
 
 
 ### Inserção da Diretoria
-#FALTA FAZER SE FOR NECESSÁRIO
+
 Esta secção correponde ao input solicitado ao utilizador, no qual aqui terá de inserir o caminho/diretoria onde guardou o ficheiro que contém os problemas iniciais.
 A inserção deste caminho terá de seguir as seguintes normas:
 
@@ -145,21 +145,84 @@ Como por exemplo:
 
 "C:/Users/David/Desktop/3ano/IA/projeto/problemas.dat"
 
+Terá de realizar a substituição nos seguintes pedaços de código:
 
+```lisp
+(defun jogada-computador (estado tempo &optional (jogador *jogador1*) (inicial t))
+  "Permite ao computador jogar."
+  (terpri)
+  (cond ((no-preenchidop estado) (setq *primeiro-estado* nil)(PrintDaMatriz (no-estado estado)))
+        (t  (PrintDaMatriz (no-estado estado))
+            (printar-detalhes inicial)
+            (valores-iniciais jogador)
+            (terpri)
+            (format t "Jogada do Computador ~a" jogador)
+            (with-open-file (str "C:/Users/asus/Documents/Log.dat"
+                     :direction :output
+                     :if-exists :append
+                     :if-does-not-exist :create)
+                (format str "Jogada do Computador ~a ~%" jogador)
+            )
+            (terpri)
+            (AlfaBeta estado most-negative-fixnum most-positive-fixnum 4 tempo jogador)
+            
+            ;;(escreve-resultado estado jogador 20000)
+        )
+  ) 
+)
 ```
-           ______________________________________________________
-          |                  Insira a Diretoria                  |
-          |                                                      |
-          |                                                      |
-          |             Tenha atencao a / e as aspas             |
-          |                                                      |
-          |______________________________________________________|
 
-Diretoria:
+```lisp
+(defun Tempo-Jogada (TipoJogo)
+"Funcao que permite fornecer um menu que permita ao utilizador inserir um tempo de cada jogada"
+       (format t "~%           ______________________________________________________")      
+       (format t "~%          |                                                      |")
+       (format t "~%          | Insira um tempo de cada jogada entre 1 e 20 segundos:|")
+       (format t "~%          |                             Ou                       |")
+       (format t "~%          |                  (Pressione 0 para Sair)             |")
+       (format t "~%          |______________________________________________________|")      
+       (format t "~%~%tempo:~%~%")
+       (format t "--> ")
+  (with-open-file (str "C:/Users/asus/Documents/Log.dat"
+                     :direction :output
+                     :if-exists :supersede
+                     :if-does-not-exist :create)
+                (format str "Jogo ~%")
+            )
+  (let ((tempo (read))) 
+    (cond ((not (numberp tempo)) (Tempo-Jogada TipoJogo)) ;; Verifica se esta a inserir um numero
+          ((= tempo 0) (format t "Saindo...~%")) ;; Sai do jogo
+          ((and (>= tempo 1) (<= tempo 20) (= TipoJogo 1)) (jogar-humano-pc (tabuleiro-inicial) 'humano (* 1000 tempo)))
+          ((and (>= tempo 1) (<= tempo 20) (= TipoJogo 2)) (jogar-humano-pc (tabuleiro-inicial) 'pc (* 1000 tempo)))
+          ((and (>= tempo 1) (<= tempo 20) (= TipoJogo 3)) (jogar-pc-pc (tabuleiro-inicial) (* 1000 tempo)))
+          (t (format t "Opcao invalida!~%")(Tempo-Jogada TipoJogo)) ;; Se não inserir um numero entre 1 e 3 volta a pedir uma opção
 
--->
-
+    )
+  ) 
+)
 ```
+
+```lisp
+(defun printar-detalhes-ficheiro (inicial)
+  "Funcao que imprime os detalhes da jogada"
+  (with-open-file (str "C:/Users/asus/Documents/Log.dat"
+                     :direction :output
+                     :if-exists :append
+                     :if-does-not-exist :create)
+
+    (cond ((eq inicial t) )
+          (t (format str "Tempo de execucao: ~a ms~%~%" (- (get-internal-real-time) *inicio*))
+            (format str "Jogada: ~a~%~%" (no-estado *primeiro-estado*))
+            (format str "Novo estado: ~a~%~%" *primeiro-estado*)
+            (format str "Numero de cortes alfa: ~a~%~%" *cortes-alfa*)
+            (format str "Numero de cortes beta: ~a~%~%" *cortes-beta*)
+            (format str "Numero de nos analisados: ~a~%~%" *numero-de-nos-analisados*))
+    )
+  )
+)
+```
+
+
 
 ### Como Jogar
 Terá de inserir uma posição e o tipo de arco que quer inserir (vertical ou horizontal) ou seja por exemplo:
