@@ -143,7 +143,7 @@ A inserção deste caminho terá de seguir as seguintes normas:
 > **Note**
 Como por exemplo:
 
-"C:/Users/David/Desktop/3ano/IA/projeto/problemas.dat"
+"C:/Users/asus/Documents/Log.dat"
 
 Terá de realizar a substituição nos seguintes pedaços de código:
 
