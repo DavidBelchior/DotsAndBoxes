@@ -164,7 +164,7 @@ Nomeadamente:
 * no-profundidade
 * no-pai
 
-#### Sucessões
+#### Sucessores
 
 A Sucessão de um determinado nó, é um conjunto de movimentos permitidos de inserção de um arco (vertical ou horizontal) no tabuleiro.
 
@@ -253,10 +253,11 @@ function alphabeta(node, depth, alpha, beta, maximizingPlayer)
 
 ### Implementação
 ```lisp
+
 (defun AlfaBeta (estado alfa beta profundidade tempo &optional (jogador 1) (prof-no 0) )
     "Algoritmo alfabeta"
     (cond ((tempo-limite tempo prof-no) (avaliacao estado)) ;; se o tempo limite for atingido retorna a avaliacao do estado
-        ((no-preenchidop estado) (avaliacao estado)) ;; se o estado estiver preenchido retorna a avaliacao do estado
+        ((progn (incf *numero-de-nos-analisados*) (no-preenchidop estado)) (avaliacao estado)) ;; se o estado estiver preenchido retorna a avaliacao do estado, incrementa o numero de nos analisados
         ((= prof-no profundidade ) (avaliacao estado)) ;; se a profundidade for atingida retorna a avaliacao do estado
         (t (let ((estados-sucessores(novos-sucessores estado jogador (1+ prof-no)))) ;; cria uma lista com os estados sucessores
               (cond ((= (mod prof-no 2) 0) (AlfaBetaMax alfa beta (1+ prof-no) profundidade (sort estados-sucessores #'> :key #'avaliacao) jogador tempo)) ;; se a profundidade for par chama a funcao AlfaBetaMax
